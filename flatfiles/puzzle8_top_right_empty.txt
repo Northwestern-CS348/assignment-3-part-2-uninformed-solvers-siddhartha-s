@@ -17,3 +17,59 @@ fact: (pred obj1 obj2)
 rule: ((pred obj1 obj2) (pred obj2 obj3)) -> (pred obj1 obj3)
 
 """
+
+fact: (isA tile1 tile)
+fact: (isA tile2 tile)
+fact: (isA tile3 tile)
+fact: (isA tile4 tile)
+fact: (isA tile5 tile)
+fact: (isA tile6 tile)
+fact: (isA tile7 tile)
+fact: (isA tile8 tile)
+fact: (isA empty blank)
+
+fact: (isA pos1 coord)
+fact: (isA pos2 coord)
+fact: (isA pos3 coord)
+
+fact: (locx tile5 pos1)
+fact: (locy tile5 pos1)
+
+fact: (locx tile4 pos2)
+fact: (locy tile4 pos1)
+
+fact: (locx empty pos3)
+fact: (locy empty pos1)
+
+fact: (locx tile6 pos1)
+fact: (locy tile6 pos2)
+
+fact: (locx tile1 pos2)
+fact: (locy tile1 pos2)
+
+fact: (locx tile8 pos3)
+fact: (locy tile8 pos2)
+
+fact: (locx tile7 pos1)
+fact: (locy tile7 pos3)
+
+fact: (locx tile3 pos2)
+fact: (locy tile3 pos3)
+
+fact: (locx tile2 pos3)
+fact: (locy tile2 pos3)
+
+rule: ((locx ?x ?a) (locx ?y ?a) (locy ?x pos2) (isA ?x tile) (isA ?y tile)) -> (adjacent ?x ?y)
+rule: ((locx ?x ?a) (locx ?y ?a) (locy ?y pos2) (isA ?x tile) (isA ?y tile)) -> (adjacent ?x ?y)
+rule: ((locy ?x ?a) (locy ?y ?a) (locx ?y pos2) (isA ?x tile) (isA ?y tile)) -> (adjacent ?x ?y)
+rule: ((locy ?x ?a) (locy ?y ?a) (locx ?x pos2) (isA ?x tile) (isA ?y tile)) -> (adjacent ?x ?y)
+
+rule: ((locx ?x ?a) (locx ?y ?a) (locy ?x pos2) (isA ?x tile) (isA ?y blank)) -> (adjacent ?x ?y)
+rule: ((locx ?x ?a) (locx ?y ?a) (locy ?y pos2) (isA ?x tile) (isA ?y blank)) -> (adjacent ?x ?y)
+rule: ((locy ?x ?a) (locy ?y ?a) (locx ?y pos2) (isA ?x tile) (isA ?y blank)) -> (adjacent ?x ?y)
+rule: ((locy ?x ?a) (locy ?y ?a) (locx ?x pos2) (isA ?x tile) (isA ?y blank)) -> (adjacent ?x ?y)
+
+rule: ((adjacent ?x ?y)) -> (adjacent ?y ?x)
+
+rule: ((adjacent ?tile ?blank) (isA ?tile tile) (isA ?blank blank) (locx ?tile ?tilex) (locy ?tile ?tiley)
+(locx ?blank ?blankx) (locy ?blank ?blanky)) ->  (movable ?tile ?tilex ?tiley ?blankx ?blanky)

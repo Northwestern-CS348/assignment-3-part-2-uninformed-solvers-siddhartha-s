@@ -20,3 +20,50 @@ fact: (pred obj1 obj2)
 rule: ((pred obj1 obj2) (pred obj2 obj3)) -> (pred obj1 obj3)
 
 """
+
+fact: (isA disk1 disk)
+fact: (isA disk2 disk)
+fact: (isA disk3 disk)
+fact: (isA disk4 disk)
+fact: (isA disk5 disk)
+
+fact: (isA base1 base)
+
+fact: (isA peg1 peg)
+fact: (isA peg2 peg)
+fact: (isA peg3 peg)
+
+
+fact: (attached peg1 base1)
+fact: (attached peg2 base1)
+fact: (attached peg3 base1)
+
+fact: (on disk1 peg3)
+fact: (on disk2 peg2)
+fact: (on disk3 peg1)
+fact: (on disk4 peg1)
+fact: (on disk5 peg1)
+
+fact: (top disk2 peg2)
+fact: (top disk1 peg3)
+fact: (top disk3 peg1)
+
+fact: (above disk3 disk4)
+fact: (above disk4 disk5)
+
+rule: ((above ?x ?y) (isA ?x disk) (isA ?y disk)) -> (below ?y ?x)
+
+fact: (bigger disk5 disk4)
+fact: (bigger disk4 disk3)
+fact: (bigger disk3 disk2)
+fact: (bigger disk2 disk1)
+
+rule: ((bigger ?x ?y) (isA ?x disk) (isA ?y disk)) -> (smaller ?y ?x)
+rule: ((bigger ?x ?y) (bigger ?y ?z) (isA ?x disk) (isA ?y disk) (isA ?z disk)) -> (bigger ?x ?z)
+
+fact: (attached peg1 base1)
+fact: (attached peg2 base1)
+fact: (attached peg3 base1)
+
+rule: ((isA ?x disk) (isA ?y peg) (top ?x ?y) (isA ?z peg) (empty ?z)) -> (movable ?x ?y ?z)
+rule: ((isA ?x disk) (isA ?y peg) (top ?x ?y) (top ?a ?b) (isA ?a disk) (isA ?b peg) (bigger ?a ?x)) -> (movable ?x ?y ?b)
