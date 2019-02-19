@@ -93,38 +93,26 @@ class TowerOfHanoiGame(GameMaster):
         ### Student code goes here
 
         if not(self.isMovableLegal(movable_statement)):
-            print("Entered end state")
+            pass
         else:
             use_to_match = self.produceMovableQuery()
 
             check = match(movable_statement, use_to_match.statement)
             if check:
-                print(check)
-
-                print("EXTRACTING BINDINGS:")
 
                 curr_disc = check.bindings[0].constant
                 curr_init = check.bindings[1].constant
                 curr_target = check.bindings[2].constant
-
-                print(curr_disc)
-                print(curr_init)
-                print(curr_target)
 
                 self.kb.kb_retract(parse_input('fact: (on '+curr_disc.element + ' ' + curr_init.element + ')'))
                 self.kb.kb_retract(parse_input('fact: (top ' + curr_disc.element + ' ' + curr_init.element + ')'))
 
                 check_above_curr = self.kb.kb_ask(parse_input('fact: (above '+curr_disc.element + ' ?x)'))
 
-                print("PRINTING ASK QUERY: ")
-                print(check_above_curr)
-
                 if not check_above_curr:
                     self.kb.kb_assert(parse_input('fact: (empty '+curr_init.element+')'))
                 else:
                     what_was_below = check_above_curr[0].bindings_dict['?x']
-                    print("What was ?X bound to: ")
-                    print(what_was_below)
                     self.kb.kb_retract(parse_input('fact: (above '+curr_disc.element + ' ' + what_was_below + ')'))
                     self.kb.kb_assert(parse_input('fact: (top ' + what_was_below + ' ' + curr_init.element + ')'))
 
@@ -192,8 +180,6 @@ class Puzzle8Game(GameMaster):
         in_row1 = self.kb.kb_ask(parse_input("fact: (locy ?x pos1)"))
         tiles_in_row1 = [10, 10, 10]
 
-        print(type(in_row1))
-
         if in_row1:
             for x in in_row1:
                 locx_of_x = self.kb.kb_ask(parse_input("fact: (locx " + x.bindings_dict['?x'] + " ?pos)"))
@@ -247,35 +233,27 @@ class Puzzle8Game(GameMaster):
         """
 
         if not (self.isMovableLegal(movable_statement)):
-            print("Entered the void zone")
+            pass
         else:
             used_for_match = self.produceMovableQuery()
             check = match(movable_statement, used_for_match.statement)
 
             if check:
-                print(check)
+                tile = check.bindings[0].constant
+                currx = check.bindings[1].constant
+                curry = check.bindings[2].constant
+                futurex = check.bindings[3].constant
+                futurey = check.bindings[4].constant
 
-            tile = check.bindings[0].constant
-            currx = check.bindings[1].constant
-            curry = check.bindings[2].constant
-            futurex = check.bindings[3].constant
-            futurey = check.bindings[4].constant
+                self.kb.kb_retract(parse_input("fact: (locx empty " + futurex.element + ')'))
+                self.kb.kb_retract(parse_input("fact: (locy empty " + futurey.element + ')'))
+                self.kb.kb_retract(parse_input("fact: (locx " + tile.element + " " + currx.element + ')'))
+                self.kb.kb_retract(parse_input("fact: (locy " + tile.element + " " + curry.element + ')'))
 
-            print(tile)
-            print(currx)
-            print(curry)
-            print(futurex)
-            print(futurey)
-
-            self.kb.kb_retract(parse_input("fact: (locx empty " + futurex.element + ')'))
-            self.kb.kb_retract(parse_input("fact: (locy empty " + futurey.element + ')'))
-            self.kb.kb_retract(parse_input("fact: (locx " + tile.element + " " + currx.element + ')'))
-            self.kb.kb_retract(parse_input("fact: (locy " + tile.element + " " + curry.element + ')'))
-
-            self.kb.kb_assert(parse_input("fact: (locx empty " + currx.element + ')'))
-            self.kb.kb_assert(parse_input("fact: (locy empty " + curry.element + ')'))
-            self.kb.kb_assert(parse_input("fact: (locx " + tile.element + " " + futurex.element + ')'))
-            self.kb.kb_assert(parse_input("fact: (locy " + tile.element + " " + futurey.element + ')'))
+                self.kb.kb_assert(parse_input("fact: (locx empty " + currx.element + ')'))
+                self.kb.kb_assert(parse_input("fact: (locy empty " + curry.element + ')'))
+                self.kb.kb_assert(parse_input("fact: (locx " + tile.element + " " + futurex.element + ')'))
+                self.kb.kb_assert(parse_input("fact: (locy " + tile.element + " " + futurey.element + ')'))
 
     def reverseMove(self, movable_statement):
         """
