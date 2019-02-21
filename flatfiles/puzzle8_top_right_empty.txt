@@ -28,10 +28,6 @@ fact: (isA tile7 tile)
 fact: (isA tile8 tile)
 fact: (isA empty blank)
 
-fact: (isA pos1 coord)
-fact: (isA pos2 coord)
-fact: (isA pos3 coord)
-
 fact: (locx tile5 pos1)
 fact: (locy tile5 pos1)
 
@@ -59,11 +55,6 @@ fact: (locy tile3 pos3)
 fact: (locx tile2 pos3)
 fact: (locy tile2 pos3)
 
-rule: ((locx ?x ?a) (locx ?y ?a) (locy ?x pos2) (isA ?x tile) (isA ?y tile)) -> (adjacent ?x ?y)
-rule: ((locx ?x ?a) (locx ?y ?a) (locy ?y pos2) (isA ?x tile) (isA ?y tile)) -> (adjacent ?x ?y)
-rule: ((locy ?x ?a) (locy ?y ?a) (locx ?y pos2) (isA ?x tile) (isA ?y tile)) -> (adjacent ?x ?y)
-rule: ((locy ?x ?a) (locy ?y ?a) (locx ?x pos2) (isA ?x tile) (isA ?y tile)) -> (adjacent ?x ?y)
-
 rule: ((locx ?x ?a) (locx ?y ?a) (locy ?x pos2) (isA ?x tile) (isA ?y blank)) -> (adjacent ?x ?y)
 rule: ((locx ?x ?a) (locx ?y ?a) (locy ?y pos2) (isA ?x tile) (isA ?y blank)) -> (adjacent ?x ?y)
 rule: ((locy ?x ?a) (locy ?y ?a) (locx ?y pos2) (isA ?x tile) (isA ?y blank)) -> (adjacent ?x ?y)
@@ -71,5 +62,5 @@ rule: ((locy ?x ?a) (locy ?y ?a) (locx ?x pos2) (isA ?x tile) (isA ?y blank)) ->
 
 rule: ((adjacent ?x ?y)) -> (adjacent ?y ?x)
 
-rule: ((adjacent ?tile ?blank) (isA ?tile tile) (isA ?blank blank) (locx ?tile ?tilex) (locy ?tile ?tiley)
+rule: ((adjacent ?tile ?blank) (locx ?tile ?tilex) (locy ?tile ?tiley)
 (locx ?blank ?blankx) (locy ?blank ?blanky)) ->  (movable ?tile ?tilex ?tiley ?blankx ?blanky)
