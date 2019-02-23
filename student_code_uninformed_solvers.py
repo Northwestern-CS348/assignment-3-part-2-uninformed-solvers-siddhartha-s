@@ -1,11 +1,13 @@
 
 from solver import *
 from collections import deque
-import queue
+
+
 
 class SolverDFS(UninformedSolver):
     def __init__(self, gameMaster, victoryCondition):
         super().__init__(gameMaster, victoryCondition)
+        self.count = 0
 
     def solveOneStep(self):
         """
@@ -21,6 +23,9 @@ class SolverDFS(UninformedSolver):
             True if the desired solution state is reached, False otherwise
         """
         # Student code goes here
+
+        print(self.count)
+        self.count += 1
 
         if self.currentState not in self.visited:
             # Enters here if it's visiting the state for the first time
@@ -106,30 +111,22 @@ class SolverBFS(UninformedSolver):
         # Student code goes here
 
         if self.currentState not in self.visited:
-            print("I REALLY SHOULDN'T BE HERE")
             # Enters here if it's visiting the state for the first time
             self.visited[self.currentState] = True
             return self.currentState.state == self.victoryCondition
 
         if self.currentState.state == self.victoryCondition:
-            print("I winnnnnnnn")
             # If the state we're already at is the victoryCondition
             return True
 
         # The whole if branch and for `move` loop and for `child` loop below is to populate
         # and link parent and children and populate the queue
 
-        print("Current State at beginning", self.currentState.state)
-        x = self.currentState.state
-
-
         if not self.currentState.children:
             movables = self.gm.getMovables()
 
             if movables:
-                print("movables:")
                 for move in movables:
-                    print(move)
                     self.gm.makeMove(move)
                     new_gstuple = self.gm.getGameState()
 
@@ -174,9 +171,6 @@ class SolverBFS(UninformedSolver):
                     self.currentState = x
                     self.visited[x] = True
                     break
-
-        print("Are game master and current state at the same state?")
-        print(self.gm.getGameState() == self.currentState.state)
 
         self.visited[self.currentState] = True
 

@@ -177,39 +177,39 @@ class Puzzle8Game(GameMaster):
             A Tuple of Tuples that represent the game state
         """
 
-        in_row1 = self.kb.kb_ask(parse_input("fact: (locy ?x pos1)"))
+        in_row1 = self.kb.kb_ask(parse_input("fact: (coordinate ?tile ?xcoord pos1)"))
         tiles_in_row1 = [10, 10, 10]
 
         if in_row1:
             for x in in_row1:
-                locx_of_x = self.kb.kb_ask(parse_input("fact: (locx " + x.bindings_dict['?x'] + " ?pos)"))
+                locx_of_x = self.kb.kb_ask(parse_input("fact: (coordinate " + x.bindings_dict['?tile'] + " ?pos pos1)"))
                 posx_of_x = int(locx_of_x[0].bindings_dict['?pos'].replace('pos', '')) - 1
-                if 'tile' in x.bindings_dict['?x']:
-                    tiles_in_row1[posx_of_x] = (int(x.bindings_dict['?x'].replace('tile', '')))
+                if 'tile' in x.bindings_dict['?tile']:
+                    tiles_in_row1[posx_of_x] = (int(x.bindings_dict['?tile'].replace('tile', '')))
                 else:
                     tiles_in_row1[posx_of_x] = -1
 
-        in_row2 = self.kb.kb_ask(parse_input("fact: (locy ?x pos2)"))
+        in_row2 = self.kb.kb_ask(parse_input("fact: (coordinate ?tile ?xcoord pos2)"))
         tiles_in_row2 = [10, 10, 10]
 
         if in_row2:
             for x in in_row2:
-                locx_of_x = self.kb.kb_ask(parse_input("fact: (locx " + x.bindings_dict['?x'] + " ?pos)"))
+                locx_of_x = self.kb.kb_ask(parse_input("fact: (coordinate " + x.bindings_dict['?tile'] + " ?pos pos2)"))
                 posx_of_x = int(locx_of_x[0].bindings_dict['?pos'].replace('pos', '')) - 1
-                if 'tile' in x.bindings_dict['?x']:
-                    tiles_in_row2[posx_of_x] = (int(x.bindings_dict['?x'].replace('tile', '')))
+                if 'tile' in x.bindings_dict['?tile']:
+                    tiles_in_row2[posx_of_x] = (int(x.bindings_dict['?tile'].replace('tile', '')))
                 else:
                     tiles_in_row2[posx_of_x] = -1
 
-        in_row3 = self.kb.kb_ask(parse_input("fact: (locy ?x pos3)"))
+        in_row3 = self.kb.kb_ask(parse_input("fact: (coordinate ?tile ?xcoord pos3)"))
         tiles_in_row3 = [10, 10, 10]
 
         if in_row3:
             for x in in_row3:
-                locx_of_x = self.kb.kb_ask(parse_input("fact: (locx " + x.bindings_dict['?x'] + " ?pos)"))
+                locx_of_x = self.kb.kb_ask(parse_input("fact: (coordinate " + x.bindings_dict['?tile'] + " ?pos pos3)"))
                 posx_of_x = int(locx_of_x[0].bindings_dict['?pos'].replace('pos', '')) - 1
-                if 'tile' in x.bindings_dict['?x']:
-                    tiles_in_row3[posx_of_x] = (int(x.bindings_dict['?x'].replace('tile', '')))
+                if 'tile' in x.bindings_dict['?tile']:
+                    tiles_in_row3[posx_of_x] = (int(x.bindings_dict['?tile'].replace('tile', '')))
                 else:
                     tiles_in_row3[posx_of_x] = -1
 
@@ -245,15 +245,14 @@ class Puzzle8Game(GameMaster):
                 futurex = check.bindings[3].constant
                 futurey = check.bindings[4].constant
 
-                self.kb.kb_retract(parse_input("fact: (locx empty " + futurex.element + ')'))
-                self.kb.kb_retract(parse_input("fact: (locy empty " + futurey.element + ')'))
-                self.kb.kb_retract(parse_input("fact: (locx " + tile.element + " " + currx.element + ')'))
-                self.kb.kb_retract(parse_input("fact: (locy " + tile.element + " " + curry.element + ')'))
+                self.kb.kb_retract(parse_input("fact: (coordinate empty " + futurex.element + " " + futurey.element +
+                                               ')'))
+                self.kb.kb_retract(parse_input("fact: (coordinate " + tile.element + " " + currx.element + " " +
+                                               curry.element + ')'))
 
-                self.kb.kb_assert(parse_input("fact: (locx empty " + currx.element + ')'))
-                self.kb.kb_assert(parse_input("fact: (locy empty " + curry.element + ')'))
-                self.kb.kb_assert(parse_input("fact: (locx " + tile.element + " " + futurex.element + ')'))
-                self.kb.kb_assert(parse_input("fact: (locy " + tile.element + " " + futurey.element + ')'))
+                self.kb.kb_assert(parse_input("fact: (coordinate empty " + currx.element + " " + curry.element + ')'))
+                self.kb.kb_assert(parse_input("fact: (coordinate " + tile.element + " " + futurex.element + " " +
+                                              futurey.element + ')'))
 
     def reverseMove(self, movable_statement):
         """
