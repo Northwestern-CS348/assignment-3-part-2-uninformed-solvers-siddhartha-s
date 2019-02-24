@@ -7,7 +7,7 @@ from collections import deque
 class SolverDFS(UninformedSolver):
     def __init__(self, gameMaster, victoryCondition):
         super().__init__(gameMaster, victoryCondition)
-        self.count = 0
+
 
     def solveOneStep(self):
         """
@@ -23,9 +23,6 @@ class SolverDFS(UninformedSolver):
             True if the desired solution state is reached, False otherwise
         """
         # Student code goes here
-
-        print(self.count)
-        self.count += 1
 
         if self.currentState not in self.visited:
             # Enters here if it's visiting the state for the first time
